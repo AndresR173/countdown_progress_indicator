@@ -7,9 +7,9 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+    final controller = CountDownController();
     return MaterialApp(
       home: Scaffold(
         body: Container(
@@ -19,10 +19,11 @@ class MyApp extends StatelessWidget {
               height: 200,
               width: 200,
               child: CountDownProgressIndicator(
+                controller: controller,
                 valueColor: Colors.red,
                 backgroundColor: Colors.blue,
-                time: 20,
-                onFinish: (_) => null,
+                duration: 20,
+                onComplete: () => null,
               ),
             ),
           ),
