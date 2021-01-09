@@ -2,14 +2,41 @@ import 'package:flutter/material.dart';
 
 /// Create a Circular countdown indicator
 class CountDownProgressIndicator extends StatefulWidget {
+  /// Timer duration in seconds
   final int duration;
+
+  /// Default Background color
   final Color backgroundColor;
+
+  /// Filling color
   final Color valueColor;
+
+  /// This controller is used to restart, stop or resume the countdown
   final CountDownController controller;
+
+  /// This call callback will be excuted when the Countdown ends.
   final Function onComplete;
+
+  /// Stroke width, the default is 10
   final double strokeWidth;
+
+  /// Initial time, 0 by default
   final int initialPosition;
-  final Color textColor;
+
+  /// The style for the remaining time indicator
+  /// The default is black color, and fontWeight of W600
+  final TextStyle timeTextStyle;
+
+  /// The style for the widget label
+  /// The default is black color, and fontWeight of W600
+  final TextStyle labelTextStyle;
+
+  /// This text will be shown with the time indicator
+  final String text;
+
+  /// true by default, this value indicates that the timer
+  /// will start automatically
+  final bool autostart;
 
   // ignore: public_member_api_docs
   const CountDownProgressIndicator({
@@ -20,17 +47,21 @@ class CountDownProgressIndicator extends StatefulWidget {
     @required this.valueColor,
     @required this.controller,
     @required this.onComplete,
-    this.textColor = Colors.black,
+    this.timeTextStyle,
+    this.labelTextStyle,
     this.strokeWidth = 10,
+    this.text,
+    this.autostart = true,
   })  : assert(duration > 0),
+        assert(initialPosition < duration),
         super(key: key);
 
   @override
-  CountDownProgressIndicatorState createState() =>
-      CountDownProgressIndicatorState();
+  _CountDownProgressIndicatorState createState() =>
+      _CountDownProgressIndicatorState();
 }
 
-class CountDownProgressIndicatorState extends State<CountDownProgressIndicator>
+class _CountDownProgressIndicatorState extends State<CountDownProgressIndicator>
     with SingleTickerProviderStateMixin {
   Animation<double> _animation;
   AnimationController _animationController;
@@ -65,7 +96,7 @@ class CountDownProgressIndicatorState extends State<CountDownProgressIndicator>
 
     widget.controller._state = this;
 
-    onAnimationStart();
+    if (widget.autostart) onAnimationStart();
   }
 
   @override
@@ -96,31 +127,30 @@ class CountDownProgressIndicatorState extends State<CountDownProgressIndicator>
           ),
           Center(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    TextSpan(
-                      text: (widget.duration - _animation.value)
-                          .toStringAsFixed(0),
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
-                          color: widget.textColor,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600),
+                    Text(
+                      (widget.duration - _animation.value).toStringAsFixed(0),
+                      style: widget.timeTextStyle ??
+                          Theme.of(context).textTheme.bodyText1.copyWith(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600),
                     ),
-                    TextSpan(
-                      text: '\nSEG',
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
-                            color: widget.textColor,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
+                    if (widget.text != null)
+                      Text(
+                        widget.text,
+                        style: widget.labelTextStyle ??
+                            Theme.of(context).textTheme.bodyText1.copyWith(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                      ),
                   ],
-                ),
-              ),
-            ),
+                )),
           ),
         ],
       ),
@@ -130,21 +160,42 @@ class CountDownProgressIndicatorState extends State<CountDownProgressIndicator>
 
 /// Helper class for CountDown widget
 class CountDownController {
-  CountDownProgressIndicatorState _state;
+  _CountDownProgressIndicatorState _state;
 
   /// Pause countdown timer
   void pause() {
     _state._animationController.stop(canceled: false);
   }
 
-  /// Resume countdown time
+  /// Resumes countdown time
   void resume() {
-    _state._animationController.forward(from: _state._animation.value ?? 0);
+    final currentPosition = _state._animation.value;
+    _state._animation = Tween<double>(
+      begin: currentPosition,
+      end: _state.widget.duration.toDouble(),
+    ).animate(_state._animationController);
+    _state._animationController.forward(from: 0);
   }
 
-  /// Restart countdown timer.
+  /// Starts countdown timer
+  /// This method works when [autostart] is false
+  void start() {
+    if (!_state.widget.autostart) {
+      _state._animationController
+          .forward(from: _state.widget.initialPosition.toDouble());
+    }
+  }
+
+  /// Restarts countdown timer.
   ///
-  /// * [time] is an optional value, if this value is null,
-  /// the time will use the previous time defined in the widget
-  void restart({int time}) {}
+  /// * [duration] is an optional value, if this value is null,
+  /// the duration will use the previous one defined in the widget
+  /// * Use [initialPosition] if you want the original position
+  void restart({int duration, int initialPosition}) {
+    if (duration != null) {
+      _state._animationController.duration = Duration(seconds: duration);
+    }
+    _state._animationController.forward(
+        from: initialPosition.toDouble() ?? _state.widget.initialPosition);
+  }
 }
