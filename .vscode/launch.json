@@ -11,7 +11,7 @@
         },
         {
             "name": "example",
-            "cwd": "example/example",
+            "cwd": "example",
             "request": "launch",
             "type": "dart"
         }
