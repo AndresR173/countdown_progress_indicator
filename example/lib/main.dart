@@ -7,7 +7,6 @@ void main() {
 
 class MyApp extends StatefulWidget {
   const MyApp({Key key}) : super(key: key);
-
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -17,6 +16,7 @@ class _MyAppState extends State<MyApp> {
   final _controller = CountDownController();
   @override
   Widget build(BuildContext context) {
+    final controller = CountDownController();
     return MaterialApp(
       home: Scaffold(
         body: Container(
