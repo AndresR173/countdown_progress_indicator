@@ -11,7 +11,11 @@
         },
         {
             "name": "example",
+<<<<<<< HEAD
             "cwd": "example",
+=======
+            "cwd": "example/example",
+>>>>>>> Update example directory
             "request": "launch",
             "type": "dart"
         }
