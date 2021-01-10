@@ -16,6 +16,9 @@ class _MyAppState extends State<MyApp> {
   bool _isRunning = true;
   final _controller = CountDownController();
   @override
+  _MyAppState createState() => _MyAppState();
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(

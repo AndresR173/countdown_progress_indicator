@@ -1,7 +1,6 @@
 name: countdown_progress_indicator
 description: Customizable countdown timer for Flutter.
 version: 0.0.1
-author: Andres Felipe Rojas
 homepage: https://github.com/AndresR173/countdown_progress_indicator
 
 environment:

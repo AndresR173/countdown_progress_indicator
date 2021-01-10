@@ -45,8 +45,8 @@ class CountDownProgressIndicator extends StatefulWidget {
     this.initialPosition = 0,
     @required this.backgroundColor,
     @required this.valueColor,
-    @required this.controller,
-    @required this.onComplete,
+    this.controller,
+    this.onComplete,
     this.timeTextStyle,
     this.labelTextStyle,
     this.strokeWidth = 10,
@@ -94,7 +94,7 @@ class _CountDownProgressIndicatorState extends State<CountDownProgressIndicator>
       setState(() {});
     });
 
-    widget.controller._state = this;
+    widget.controller?._state = this;
 
     if (widget.autostart) onAnimationStart();
   }
