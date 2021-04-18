@@ -6,7 +6,7 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -15,6 +15,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool _isRunning = true;
   final _controller = CountDownController();
+
   @override
   _MyAppState createState() => _MyAppState();
 
@@ -42,7 +43,7 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
                 SizedBox(height: 20),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () => setState(() {
                     if (_isRunning)
                       _controller.pause();
