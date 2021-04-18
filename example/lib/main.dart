@@ -17,9 +17,6 @@ class _MyAppState extends State<MyApp> {
   final _controller = CountDownController();
 
   @override
-  _MyAppState createState() => _MyAppState();
-
-  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
