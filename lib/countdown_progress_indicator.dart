@@ -12,10 +12,10 @@ class CountDownProgressIndicator extends StatefulWidget {
   final Color valueColor;
 
   /// This controller is used to restart, stop or resume the countdown
-  final CountDownController controller;
+  final CountDownController? controller;
 
   /// This call callback will be excuted when the Countdown ends.
-  final Function onComplete;
+  final Function? onComplete;
 
   /// Stroke width, the default is 10
   final double strokeWidth;
@@ -25,14 +25,14 @@ class CountDownProgressIndicator extends StatefulWidget {
 
   /// The style for the remaining time indicator
   /// The default is black color, and fontWeight of W600
-  final TextStyle timeTextStyle;
+  final TextStyle? timeTextStyle;
 
   /// The style for the widget label
   /// The default is black color, and fontWeight of W600
-  final TextStyle labelTextStyle;
+  final TextStyle? labelTextStyle;
 
   /// This text will be shown with the time indicator
-  final String text;
+  final String? text;
 
   /// true by default, this value indicates that the timer
   /// will start automatically
@@ -40,11 +40,11 @@ class CountDownProgressIndicator extends StatefulWidget {
 
   // ignore: public_member_api_docs
   const CountDownProgressIndicator({
-    Key key,
-    @required this.duration,
+    Key? key,
+    required this.duration,
     this.initialPosition = 0,
-    @required this.backgroundColor,
-    @required this.valueColor,
+    required this.backgroundColor,
+    required this.valueColor,
     this.controller,
     this.onComplete,
     this.timeTextStyle,
@@ -63,8 +63,8 @@ class CountDownProgressIndicator extends StatefulWidget {
 
 class _CountDownProgressIndicatorState extends State<CountDownProgressIndicator>
     with SingleTickerProviderStateMixin {
-  Animation<double> _animation;
-  AnimationController _animationController;
+  late Animation<double> _animation;
+  late AnimationController _animationController;
 
   @override
   void dispose() {
@@ -87,7 +87,7 @@ class _CountDownProgressIndicatorState extends State<CountDownProgressIndicator>
     ).animate(_animationController);
 
     _animationController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) widget.onComplete();
+      if (status == AnimationStatus.completed) widget.onComplete?.call();
     });
 
     _animationController.addListener(() {
@@ -127,30 +127,31 @@ class _CountDownProgressIndicatorState extends State<CountDownProgressIndicator>
           ),
           Center(
             child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    (widget.duration - _animation.value).toStringAsFixed(0),
+                    style: widget.timeTextStyle ??
+                        Theme.of(context).textTheme.bodyText1!.copyWith(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600),
+                  ),
+                  if (widget.text != null)
                     Text(
-                      (widget.duration - _animation.value).toStringAsFixed(0),
-                      style: widget.timeTextStyle ??
-                          Theme.of(context).textTheme.bodyText1.copyWith(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600),
+                      widget.text!,
+                      style: widget.labelTextStyle ??
+                          Theme.of(context).textTheme.bodyText1!.copyWith(
+                                color: Colors.black,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),
                     ),
-                    if (widget.text != null)
-                      Text(
-                        widget.text,
-                        style: widget.labelTextStyle ??
-                            Theme.of(context).textTheme.bodyText1.copyWith(
-                                  color: Colors.black,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                      ),
-                  ],
-                )),
+                ],
+              ),
+            ),
           ),
         ],
       ),
@@ -160,7 +161,7 @@ class _CountDownProgressIndicatorState extends State<CountDownProgressIndicator>
 
 /// Helper class for CountDown widget
 class CountDownController {
-  _CountDownProgressIndicatorState _state;
+  late _CountDownProgressIndicatorState _state;
 
   /// Pause countdown timer
   void pause() {
@@ -191,11 +192,11 @@ class CountDownController {
   /// * [duration] is an optional value, if this value is null,
   /// the duration will use the previous one defined in the widget
   /// * Use [initialPosition] if you want the original position
-  void restart({int duration, int initialPosition}) {
+  void restart({int? duration, required double initialPosition}) {
     if (duration != null) {
       _state._animationController.duration = Duration(seconds: duration);
     }
-    _state._animationController.forward(
-        from: initialPosition.toDouble() ?? _state.widget.initialPosition);
+
+    _state._animationController.forward(from: initialPosition);
   }
 }
