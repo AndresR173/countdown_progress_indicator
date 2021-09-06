@@ -170,12 +170,7 @@ class CountDownController {
 
   /// Resumes countdown time
   void resume() {
-    final currentPosition = _state._animation.value;
-    _state._animation = Tween<double>(
-      begin: currentPosition,
-      end: _state.widget.duration.toDouble(),
-    ).animate(_state._animationController);
-    _state._animationController.forward(from: 0);
+    _state._animationController.forward();
   }
 
   /// Starts countdown timer
