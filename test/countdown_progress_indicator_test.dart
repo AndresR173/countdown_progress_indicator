@@ -6,7 +6,7 @@ import 'package:countdown_progress_indicator/countdown_progress_indicator.dart';
 void main() {
   testWidgets('The widget has a title', (WidgetTester tester) async {
     await tester.pumpWidget(
-      Directionality(
+      const Directionality(
         textDirection: TextDirection.ltr,
         child: CountDownProgressIndicator(
           valueColor: Colors.red,
@@ -24,7 +24,7 @@ void main() {
 
   testWidgets('The widget stops at 0', (WidgetTester tester) async {
     await tester.pumpWidget(
-      Directionality(
+      const Directionality(
         textDirection: TextDirection.ltr,
         child: CountDownProgressIndicator(
           valueColor: Colors.red,

@@ -2,7 +2,7 @@ import 'package:countdown_progress_indicator/countdown_progress_indicator.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -39,13 +39,14 @@ class _MyAppState extends State<MyApp> {
                     onComplete: () => null,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () => setState(() {
-                    if (_isRunning)
+                    if (_isRunning) {
                       _controller.pause();
-                    else
+                    } else {
                       _controller.resume();
+                    }
 
                     _isRunning = !_isRunning;
                   }),

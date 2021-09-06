@@ -1,6 +1,6 @@
 name: countdown_progress_indicator
 description: Customizable countdown timer for Flutter with pause/resume controls.
-version: 0.1.0
+version: 0.1.1
 homepage: https://github.com/AndresR173/countdown_progress_indicator
 
 environment:
@@ -14,7 +14,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  pedantic: ^1.0.0
+  flutter_lints: ^1.0.4
 
 # The following section is specific to Flutter.
 flutter:

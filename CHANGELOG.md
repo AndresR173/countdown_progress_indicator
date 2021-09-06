@@ -1,3 +1,7 @@
+## [0.1.1]
+
+- Fix Resume method
+
 ## [0.1.0]
 
 - Support Null Safety
