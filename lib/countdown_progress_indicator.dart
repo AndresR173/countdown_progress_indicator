@@ -27,6 +27,11 @@ class CountDownProgressIndicator extends StatefulWidget {
   /// The default is black color, and fontWeight of W600
   final TextStyle? timeTextStyle;
 
+  /// The formatter for the time string
+  /// By default, no formatting is applied and
+  /// the time is displayed in number of seconds left
+  final String Function(int seconds)? timeFormatter;
+
   /// The style for the widget label
   /// The default is black color, and fontWeight of W600
   final TextStyle? labelTextStyle;
@@ -48,6 +53,7 @@ class CountDownProgressIndicator extends StatefulWidget {
     this.controller,
     this.onComplete,
     this.timeTextStyle,
+    this.timeFormatter,
     this.labelTextStyle,
     this.strokeWidth = 10,
     this.text,
@@ -57,12 +63,10 @@ class CountDownProgressIndicator extends StatefulWidget {
         super(key: key);
 
   @override
-  _CountDownProgressIndicatorState createState() =>
-      _CountDownProgressIndicatorState();
+  _CountDownProgressIndicatorState createState() => _CountDownProgressIndicatorState();
 }
 
-class _CountDownProgressIndicatorState extends State<CountDownProgressIndicator>
-    with SingleTickerProviderStateMixin {
+class _CountDownProgressIndicatorState extends State<CountDownProgressIndicator> with SingleTickerProviderStateMixin {
   late Animation<double> _animation;
   late AnimationController _animationController;
 
@@ -132,12 +136,13 @@ class _CountDownProgressIndicatorState extends State<CountDownProgressIndicator>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    (widget.duration - _animation.value).toStringAsFixed(0),
+                    widget.timeFormatter?.call((widget.duration - _animation.value).ceil()) ??
+                        (widget.duration - _animation.value).toStringAsFixed(0),
                     style: widget.timeTextStyle ??
-                        Theme.of(context).textTheme.bodyText1!.copyWith(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600),
+                        Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .copyWith(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600),
                   ),
                   if (widget.text != null)
                     Text(
@@ -177,8 +182,7 @@ class CountDownController {
   /// This method works when [autostart] is false
   void start() {
     if (!_state.widget.autostart) {
-      _state._animationController
-          .forward(from: _state.widget.initialPosition.toDouble());
+      _state._animationController.forward(from: _state.widget.initialPosition.toDouble());
     }
   }
 
