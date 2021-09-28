@@ -126,7 +126,7 @@ class _CountDownProgressIndicatorState extends State<CountDownProgressIndicator>
               strokeWidth: widget.strokeWidth,
               backgroundColor: widget.backgroundColor,
               valueColor: AlwaysStoppedAnimation<Color>(widget.valueColor),
-              value: (widget.duration - _animation.value) / widget.duration,
+              value: _animation.value / widget.duration,
             ),
           ),
           Center(
