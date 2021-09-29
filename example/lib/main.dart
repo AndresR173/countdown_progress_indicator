@@ -34,8 +34,11 @@ class _MyAppState extends State<MyApp> {
                     valueColor: Colors.red,
                     backgroundColor: Colors.blue,
                     initialPosition: 0,
-                    duration: 20,
-                    text: 'SEC',
+                    duration: 365,
+                    timeFormatter: (seconds) {
+                      return Duration(seconds: seconds).toString().split('.')[0].padLeft(8, '0');
+                    },
+                    text: 'hh:mm:ss',
                     onComplete: () => null,
                   ),
                 ),
