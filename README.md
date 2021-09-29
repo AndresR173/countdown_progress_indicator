@@ -13,7 +13,7 @@ To use this package, add `countdown_progress_indicador` as a dependency in your 
 ```yaml
 dependencies:
 	...
-	countdown_progress_indicador: ^0.1.1
+	countdown_progress_indicador: ^0.1.2
 ```
 
 ## How to use
@@ -40,6 +40,28 @@ SizedBox(
 		text:  'SEC',
 		onComplete: () =>  null,
 	),
+),
+```
+
+## Custom Formatter
+
+If you want to show a text different than the time in seconds, you can implement a custom time formatter.
+
+```dart
+CountDownProgressIndicator(
+	controller: _controller,
+	valueColor: Colors.red,
+	backgroundColor: Colors.blue,
+	initialPosition: 0,
+	duration: 365,
+	timeFormatter: (seconds) {
+		return Duration(seconds: seconds)
+			.toString()
+			.split('.')[0]
+			.padLeft(8, '0');
+	},
+	text: 'hh:mm:ss',
+	onComplete: () => null,
 ),
 ```
 

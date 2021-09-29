@@ -1,3 +1,7 @@
+## [0.1.2]
+
+- Add time format
+
 ## [0.1.1]
 
 - Fix Resume method

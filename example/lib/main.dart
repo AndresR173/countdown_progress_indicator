@@ -15,6 +15,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool _isRunning = true;
   final _controller = CountDownController();
+  final _controller2 = CountDownController();
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +37,26 @@ class _MyAppState extends State<MyApp> {
                     initialPosition: 0,
                     duration: 365,
                     timeFormatter: (seconds) {
-                      return Duration(seconds: seconds).toString().split('.')[0].padLeft(8, '0');
+                      return Duration(seconds: seconds)
+                          .toString()
+                          .split('.')[0]
+                          .padLeft(8, '0');
                     },
                     text: 'hh:mm:ss',
+                    onComplete: () => null,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  height: 200,
+                  width: 200,
+                  child: CountDownProgressIndicator(
+                    controller: _controller2,
+                    valueColor: Colors.red,
+                    backgroundColor: Colors.blue,
+                    initialPosition: 0,
+                    duration: 365,
+                    text: 'Seg',
                     onComplete: () => null,
                   ),
                 ),
@@ -47,8 +65,10 @@ class _MyAppState extends State<MyApp> {
                   onPressed: () => setState(() {
                     if (_isRunning) {
                       _controller.pause();
+                      _controller2.pause();
                     } else {
                       _controller.resume();
+                      _controller2.resume();
                     }
 
                     _isRunning = !_isRunning;
