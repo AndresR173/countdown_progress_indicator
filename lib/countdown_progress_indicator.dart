@@ -45,7 +45,7 @@ class CountDownProgressIndicator extends StatefulWidget {
 
   // ignore: public_member_api_docs
   const CountDownProgressIndicator({
-    Key? key,
+    super.key,
     required this.duration,
     this.initialPosition = 0,
     required this.backgroundColor,
@@ -59,14 +59,15 @@ class CountDownProgressIndicator extends StatefulWidget {
     this.text,
     this.autostart = true,
   })  : assert(duration > 0),
-        assert(initialPosition < duration),
-        super(key: key);
+        assert(initialPosition < duration);
 
   @override
-  _CountDownProgressIndicatorState createState() => _CountDownProgressIndicatorState();
+  State<CountDownProgressIndicator> createState() =>
+      _CountDownProgressIndicatorState();
 }
 
-class _CountDownProgressIndicatorState extends State<CountDownProgressIndicator> with SingleTickerProviderStateMixin {
+class _CountDownProgressIndicatorState extends State<CountDownProgressIndicator>
+    with SingleTickerProviderStateMixin {
   late Animation<double> _animation;
   late AnimationController _animationController;
 
@@ -136,19 +137,20 @@ class _CountDownProgressIndicatorState extends State<CountDownProgressIndicator>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    widget.timeFormatter?.call((widget.duration - _animation.value).ceil()) ??
+                    widget.timeFormatter?.call(
+                            (widget.duration - _animation.value).ceil()) ??
                         (widget.duration - _animation.value).toStringAsFixed(0),
                     style: widget.timeTextStyle ??
-                        Theme.of(context)
-                            .textTheme
-                            .bodyText1!
-                            .copyWith(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600),
+                        Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600),
                   ),
                   if (widget.text != null)
                     Text(
                       widget.text!,
                       style: widget.labelTextStyle ??
-                          Theme.of(context).textTheme.bodyText1!.copyWith(
+                          Theme.of(context).textTheme.bodyLarge!.copyWith(
                                 color: Colors.black,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
@@ -182,7 +184,8 @@ class CountDownController {
   /// This method works when [autostart] is false
   void start() {
     if (!_state.widget.autostart) {
-      _state._animationController.forward(from: _state.widget.initialPosition.toDouble());
+      _state._animationController
+          .forward(from: _state.widget.initialPosition.toDouble());
     }
   }
 

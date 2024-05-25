@@ -1,7 +1,6 @@
+import 'package:countdown_progress_indicator/countdown_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:countdown_progress_indicator/countdown_progress_indicator.dart';
 
 void main() {
   testWidgets('The widget has a title', (WidgetTester tester) async {

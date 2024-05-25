@@ -13,7 +13,7 @@ To use this package, add `countdown_progress_indicador` as a dependency in your 
 ```yaml
 dependencies:
 	...
-	countdown_progress_indicador: ^0.1.2
+	countdown_progress_indicador: ^0.1.3
 ```
 
 ## How to use
